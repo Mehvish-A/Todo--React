@@ -19,7 +19,14 @@ const App = () =>{
   let newTodos= [...todoList];
  newTodos.push(todo);
  setTodoList(newTodos);
-  setTodo("");  }
+      
+ 
+ setTodoList(newTodos);
+ updateLocalStorage(newTodos);
+ 
+ setTodo("");}
+ 
+ 
   else {
 setError(true);
   }
@@ -47,23 +54,71 @@ console .log( newTodos);
 setTodoList(newTodos);
   } ;
 
+  setTodoList(newTodos);
+  updateLocalStorage(newTodos);
+  
+
+
 const handleEdit = (index) => {
   let newTodos = [...todoList];
   console.log ("newTodos [index]".text, newTodos [index].text);
+  setTodo(newTodos[index].text);
+  setEdit(true);
+  setEditIndex(index);
+  
 };
-const saveEdit = () =>{
 
+
+
+
+const saveEdit = () =>{
+console .log(saveEdit,NewTodos);
+let newTodos = [...todolist];
+newTodos[editIndex] = {
+  ...newTodos[editIndex], text : todo ,
+};
+setTodoList(newTodos);
+
+updateLocalStorage(newTodos);
+setEdit(false);
+setTodo('');
 }
 
+const handleRemoveAll = () => {
 
+  setTodoList ([]);
+  updateLocalStorage([]);
+}
 
-
+const updateLocalStorage = (data) =>{
+  localStorage.setItems(todoList, JSON.stringify(data))
+}
 
 consol .log ("todoList", todoList);
 
 
  return (<div className="App">
-  <Button color="danger">Danger!</Button>
+  <Modal isOpen={modal} toggle={toggle} {...args}>
+        <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+        <ModalBody>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={toggle}>
+            Do Something
+          </Button>{' '}
+          <Button color="secondary" onClick={toggle}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+ 
   <input type="text" class="form-control my-2" 
   placeholder="add your todo"
   onChange={handleChange} 
@@ -73,7 +128,7 @@ consol .log ("todoList", todoList);
   <button disabled = {error}
   onClick={isEdit ? saveEdit : handleSubmit} className=" mb-2 btn btn-primary">
     {isEdit ? "Edit todo" : "Add Todo"}</button>
-
+    <Button color="Danger">Remove All</Button>
 {todoList.map ((item, i) => ( 
   <div className = "mb-2 d-flex " key={i}>
   <P style={{
@@ -92,7 +147,7 @@ consol .log ("todoList", todoList);
  </div> 
 );
  
-};
+}
 
 
 
